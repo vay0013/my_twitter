@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AmplicodeDatabaseMigrationSettings" lastSelectedDirectory="article-service/src/main/resources/db/migration" />
+  <component name="AmplicodePersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="twitter.article-service.main" name="Default">
+        <packages>
+          <package value="com.vay.articleservice" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>
