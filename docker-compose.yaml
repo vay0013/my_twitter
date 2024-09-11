@@ -2,7 +2,7 @@ services:
   postgres-db:
     container_name: article-db
     image: postgres:16.4
-    restart: no
+    restart: "no"
     ports:
       - "5432:5432"
     volumes:
@@ -17,5 +17,20 @@ services:
       timeout: 5s
       start_period: 10s
       retries: 5
+  mongo-db:
+    container_name: favourite-db
+    image: mongo:7
+    restart: "no"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $$MONGO_INITDB_ROOT_USERNAME -p $$MONGO_INITDB_ROOT_PASSWORD --quiet | grep 1
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
 volumes:
   postgres_data:
+  mongo_data:
