@@ -12,25 +12,26 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/article")
+@RequestMapping("api/v1/article-service")
 public class ArticleRestController {
 
     private final ArticleService articleService;
     private final ArticleMapper articleMapper;
 
     @GetMapping
-    public List<ArticleDto> getArticles() {
-        return articleMapper.toDtos(articleService.getAll());
+    public ResponseEntity<List<ArticleDto>> getArticles() {
+        return ResponseEntity.ok(articleMapper.toDtos(articleService.getAll()));
     }
 
     @GetMapping("{id:\\d+}")
-    public ArticleDto getArticle(@PathVariable("id") Long id) {
-        return articleMapper.toDto(articleService.getById(id));
+    public ResponseEntity<ArticleDto> getArticleById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(articleMapper.toDto(articleService.getById(id)));
     }
 
     @PostMapping
-    public void addArticle(@RequestBody ArticleDto article) {
+    public ResponseEntity<Void> addArticle(@RequestBody ArticleDto article) {
         articleService.createArticle(article.title(), article.content());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{id:\\d+}")

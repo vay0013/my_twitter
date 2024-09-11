@@ -4,6 +4,14 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+todo.md
+amplicode.xml
+readme.md
+gradle
+**/gradlew
+**/gradlew.bat
+gradlew
+gradlew.bat
 
 ### STS ###
 .apt_generated

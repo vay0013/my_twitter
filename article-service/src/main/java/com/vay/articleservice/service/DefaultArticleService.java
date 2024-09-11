@@ -17,13 +17,13 @@ public class DefaultArticleService implements ArticleService {
 
     @Override
     public List<Article> getAll() {
-        return (List<Article>) articleRepository.findAll();
+        return articleRepository.findAll();
     }
 
     @Override
     public Article getById(Long id) {
         return articleRepository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Article with id: %s not found".formatted(id)));
+                new NoSuchElementException("Article with id: %d not found".formatted(id)));
     }
 
     @Override
