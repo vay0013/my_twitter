@@ -1,5 +1,6 @@
 package com.vay.articleservice.service;
 
+import com.vay.articleservice.exception.ArticleNotFoundException;
 import com.vay.articleservice.model.Article;
 import com.vay.articleservice.repository.ArticleRepository;
 import org.junit.jupiter.api.Test;
@@ -8,13 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.LongStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class DefaultArticleServiceTest {
@@ -38,7 +39,10 @@ class DefaultArticleServiceTest {
         var result = service.getAll();
 
         // then
-        assertEquals(articles, result);
+        assertThat(result)
+                .isNotNull()
+                .hasSize(3)
+                .isEqualTo(articles);
 
         verify(repository, times(1)).findAll();
         verifyNoMoreInteractions(repository);
@@ -55,7 +59,9 @@ class DefaultArticleServiceTest {
         var result = service.getById(1L);
 
         // then
-        assertEquals(article, result);
+        assertThat(result)
+                .isNotNull()
+                .isEqualTo(article);
 
         verify(repository, times(1)).findById(1L);
         verifyNoMoreInteractions(repository);
@@ -66,7 +72,9 @@ class DefaultArticleServiceTest {
         // given
 
         // when
-        assertThrows(NoSuchElementException.class, () -> service.getById(1L));
+        assertThatThrownBy(() -> service.getById(1L))
+                .isInstanceOf(ArticleNotFoundException.class)
+                .hasMessage("Article with id: 1 not found");
 
         // then
         verify(repository, times(1)).findById(1L);
@@ -87,11 +95,11 @@ class DefaultArticleServiceTest {
 //        var result = service.createArticle(title, content);
 //
 //        // then
-//        assertEquals(new Article(1L, "title", "content"), result);
-//        verify(repository,
-//                times(1)).save(new Article(null, "title", "content"));
+//        assertThat(result).isEqualTo(new Article(1L, "title", "content"));
+//        verify(repository, times(1))
+//                .save(new Article(null, "title", "content"));
 //        verifyNoMoreInteractions(repository);
-//    } WTF IT DOESN'T WORK! WHY???
+//    }
 
     @Test
     void deleteArticle_DeletesArticle() {

@@ -1,6 +1,6 @@
 package com.vay.articleservice.mapper;
 
-import com.vay.articleservice.dto.ArticleDto;
+import com.vay.articleservice.controller.dto.ArticleDto;
 import com.vay.articleservice.model.Article;
 import org.mapstruct.*;
 

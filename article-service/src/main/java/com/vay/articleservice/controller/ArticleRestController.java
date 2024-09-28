@@ -1,6 +1,6 @@
 package com.vay.articleservice.controller;
 
-import com.vay.articleservice.dto.ArticleDto;
+import com.vay.articleservice.controller.dto.ArticleDto;
 import com.vay.articleservice.mapper.ArticleMapper;
 import com.vay.articleservice.model.Article;
 import com.vay.articleservice.service.ArticleService;
@@ -24,18 +24,18 @@ public class ArticleRestController {
     }
 
     @GetMapping("{id:\\d+}")
-    public ResponseEntity<ArticleDto> getArticleById(@PathVariable("id") Long id) {
+    public ResponseEntity<ArticleDto> getArticleById(@PathVariable("id") long id) {
         return ResponseEntity.ok(articleMapper.toDto(articleService.getById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Void> addArticle(@RequestBody ArticleDto article) {
-        articleService.createArticle(article.title(), article.content());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ArticleDto> addArticle(@RequestBody ArticleDto payload) {
+        Article article = articleService.createArticle(payload.title(), payload.content());
+        return ResponseEntity.ok(articleMapper.toDto(article));
     }
 
     @DeleteMapping("{id:\\d+}")
-    public ResponseEntity<Void> deleteArticle(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteArticle(@PathVariable("id") long id) {
         articleService.deleteArticle(id);
         return ResponseEntity.noContent().build();
     }

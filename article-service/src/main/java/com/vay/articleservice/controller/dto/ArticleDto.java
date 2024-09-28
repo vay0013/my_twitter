@@ -1,4 +1,4 @@
-package com.vay.articleservice.dto;
+package com.vay.articleservice.controller.dto;
 
 import java.io.Serializable;
 

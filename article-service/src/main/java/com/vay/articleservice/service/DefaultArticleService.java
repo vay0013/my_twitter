@@ -1,5 +1,6 @@
 package com.vay.articleservice.service;
 
+import com.vay.articleservice.exception.ArticleNotFoundException;
 import com.vay.articleservice.model.Article;
 import com.vay.articleservice.repository.ArticleRepository;
 import jakarta.transaction.Transactional;
@@ -21,20 +22,20 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public Article getById(Long id) {
+    public Article getById(long id) {
         return articleRepository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Article with id: %d not found".formatted(id)));
+                new ArticleNotFoundException("Article with id: %d not found".formatted(id)));
     }
 
     @Override
     @Transactional
-    public void createArticle(String title, String content) {
-        articleRepository.save(new Article(null, title, content));
+    public Article createArticle(String title, String content) {
+        return articleRepository.save(new Article(null, title, content));
     }
 
     @Override
     @Transactional
-    public void deleteArticle(Long id) {
+    public void deleteArticle(long id) {
         articleRepository.deleteById(id);
     }
 }
