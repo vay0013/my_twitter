@@ -2,3 +2,4 @@ rootProject.name = 'twitter'
 
 include 'article-service'
 include 'feedback-service'
+include 'manager-app'

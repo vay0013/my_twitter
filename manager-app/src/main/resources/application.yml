@@ -1,0 +1,20 @@
+server:
+  port: 8080
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9080/realms/twitter
+            user-name-attribute: preferred_username
+
+        registration:
+          keycloak:
+            client-id: manager-app
+            client-secret: E8h2wgygn2KH9OH4JAoFCRcTYq42vhcH
+            scope:
+              - openid
+              - view_article
+              - edit_article
+              - microprofile-jwt
