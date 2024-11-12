@@ -1,4 +1,4 @@
-package com.vay.managerapp.configuration;
+package com.vay.managerapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -34,19 +34,33 @@ services:
       timeout: 5s
       start_period: 10s
       retries: 5
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.0.5
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    volumes:
-      - './config/keycloak/import:/opt/keycloak/data/import'
+  kafka:
+    image: apache/kafka:3.9.0
+    restart: "no"
     ports:
-      - "9080:8080"
-    command: start-dev --import-realm
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    healthcheck:
+      test: kafka-topics --bootstrap-server localhost:9092 --list
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:26.0.5
+#    environment:
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+#    volumes:
+#      - './config/keycloak/import:/opt/keycloak/data/import'
+#    ports:
+#      - "9080:8080"
+#    command: start-dev --import-realm
 volumes:
   postgres_data:
   mongo_data:
+#  kafka_data:
 networks:
   database:
     driver: bridge
