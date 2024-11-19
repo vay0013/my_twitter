@@ -11,7 +11,7 @@ public interface ArticleRestClient {
 
     Optional<Article> findArticle(long id);
 
-    void createArticle(String title, String content);
+    Article createArticle(String title, String content);
 
     void updateArticle(long id, String title, String content);
 

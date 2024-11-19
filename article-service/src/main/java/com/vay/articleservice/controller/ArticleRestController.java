@@ -2,7 +2,6 @@ package com.vay.articleservice.controller;
 
 import com.vay.articleservice.controller.dto.ArticleDto;
 import com.vay.articleservice.mapper.ArticleMapper;
-import com.vay.articleservice.model.Article;
 import com.vay.articleservice.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +18,20 @@ public class ArticleRestController {
     private final ArticleMapper articleMapper;
 
     @GetMapping
-    public ResponseEntity<List<ArticleDto>> getArticles() {
+    public ResponseEntity<List<ArticleDto>> findArticles() {
         return ResponseEntity.ok(articleMapper.toDtos(articleService.getAll()));
     }
 
     @GetMapping("{id:\\d+}")
-    public ResponseEntity<ArticleDto> getArticleById(@PathVariable("id") long id) {
+    public ResponseEntity<ArticleDto> findArticleById(@PathVariable("id") long id) {
         return ResponseEntity.ok(articleMapper.toDto(articleService.getById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<ArticleDto> addArticle(@RequestBody ArticleDto payload) {
-        Article article = articleService.createArticle(payload.title(), payload.content());
-        return ResponseEntity.ok(articleMapper.toDto(article));
+    public ResponseEntity<ArticleDto> createArticle(@RequestBody ArticleDto payload) {
+        return ResponseEntity.ok(articleMapper.toDto(
+                articleService.createArticle(payload.title(), payload.content())
+        ));
     }
 
     @DeleteMapping("{id:\\d+}")
