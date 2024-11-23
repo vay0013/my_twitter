@@ -1,6 +1,6 @@
 package com.vay.managerapp.client;
 
-import com.vay.managerapp.controller.payload.NewArticlePayload;
+import com.vay.managerapp.controller.payload.RequestArticle;
 import com.vay.managerapp.exception.BadRequestException;
 import com.vay.managerapp.model.Article;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class RestClientArticleRestClient implements ArticleRestClient {
@@ -24,7 +23,7 @@ public class RestClientArticleRestClient implements ArticleRestClient {
     private final RestClient restClient;
 
     @Override
-    public List<Article> findAllArticles() {
+    public List<Article> findArticles() {
         return restClient
                 .get()
                 .uri("api/v1/article-service")
@@ -33,16 +32,15 @@ public class RestClientArticleRestClient implements ArticleRestClient {
     }
 
     @Override
-    public Optional<Article> findArticle(long articleId) {
+    public Article findArticle(long articleId) {
         try {
-            return Optional.ofNullable(restClient
+            return restClient
                     .get()
                     .uri("api/v1/article-service/{articleId}")
                     .retrieve()
-                    .body(Article.class));
+                    .body(Article.class);
         } catch (HttpClientErrorException.BadRequest exception) {
-            return Optional.empty();
-
+            throw new NoSuchElementException(exception.getResponseBodyAsString());
         }
     }
 
@@ -53,7 +51,7 @@ public class RestClientArticleRestClient implements ArticleRestClient {
                     .post()
                     .uri("api/v1/article-service")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(new NewArticlePayload(title, content))
+                    .body(new RequestArticle(title, content))
                     .retrieve()
                     .body(Article.class);
         } catch (HttpClientErrorException.BadRequest exception) {
