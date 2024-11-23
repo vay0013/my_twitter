@@ -7,10 +7,7 @@ import com.vay.managerapp.controller.payload.ResponseArticle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class ArticleController {
     private final ArticleMapper articleMapper;
 
     @GetMapping("/{articleId:d\\+}")
-    public ResponseEntity<ResponseArticle> getArticle(@PathVariable Long articleId) {
+    public ResponseEntity<ResponseArticle> getArticle(@PathVariable("articleId") Long articleId) {
         return ResponseEntity.ok(articleMapper.toDto(articleRestClient.findArticle(articleId)));
     }
 
@@ -35,5 +32,19 @@ public class ArticleController {
     public ResponseEntity<ResponseArticle> createArticle(@RequestBody RequestArticle article) {
         return ResponseEntity.ok(
                 articleMapper.toDto(articleRestClient.createArticle(article.title(), article.content())));
+    }
+
+    @PutMapping("{articleId:d\\+}")
+    public ResponseEntity<Void> updateArticle(
+            @PathVariable("articleId") Long articleId,
+            @RequestBody RequestArticle article) {
+        articleRestClient.updateArticle(articleId, article.title(), article.content());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{articleId:d\\+}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable("articleId") Long articleId) {
+        articleRestClient.deleteArticle(articleId);
+        return ResponseEntity.noContent().build();
     }
 }

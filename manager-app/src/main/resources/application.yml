@@ -1,3 +1,8 @@
+vay:
+  services:
+    article:
+      uri: http://localhost:8090
+      registration-id: keycloak
 server:
   port: 8080
 spring:
